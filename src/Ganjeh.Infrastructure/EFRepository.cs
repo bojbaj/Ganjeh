@@ -60,7 +60,7 @@ namespace Ganjeh.Infrastructure
 
         public async Task<ICollection<T>> GetAll()
         {
-            return await appDbContext.Set<T>().AsNoTracking().Where(x => !x.Removed).ToListAsync();
+            return await appDbContext.Set<T>().AsNoTracking().Where(x => !x.Removed).OrderByDescending(x => x.Created).ToListAsync();
         }
         public Task<ICollection<T>> GetList(int pageSize, int pageNumber, Func<T, bool> condition)
         {
@@ -68,6 +68,7 @@ namespace Ganjeh.Infrastructure
                 .AsNoTracking()
                 .Where(x => !x.Removed)
                 .Where(condition)
+                .OrderByDescending(x => x.Created)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();

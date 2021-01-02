@@ -21,19 +21,29 @@ namespace Ganjeh.Api.Areas.Customer.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<RegionCountry>> Get()
+        public async Task<IActionResult> Get()
         {
-            return await regionServices.GetCountries();
+            var result = await regionServices.GetCountries();
+            if (result.Status)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
         }
 
         [HttpPost]
-        public async Task<RegionCountry> Post([FromBody] RegionCountryInsert model)
+        public async Task<IActionResult> Post([FromBody] RegionCountryInsert model)
         {
             RegionCountry regionCountry = new RegionCountry()
             {
                 Title = model.Title
             };
-            return await regionServices.AddCountry(regionCountry);
+            var result = await regionServices.AddCountry(regionCountry);
+            if (result.Status)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Ganjeh.Api.Middlewares
                     if (contextFeature != null)
                     {
                         logger.LogError($"Something went wrong: {contextFeature.Error}");
-                        Error err = new Error($"Code: {context.Response.StatusCode}, Err: {contextFeature.Error.Message}");
+                        Error err = new Error(contextFeature.Error.Message);
                         TypedResult<Error> errorBody = new TypedResult<Error>(false, "Internal Server Error.", err);
 
                         await context.Response.WriteAsync(errorBody.ToJsonString());
