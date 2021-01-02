@@ -2,7 +2,6 @@ using Ganjeh.Domain.Interfaces;
 using Ganjeh.Domain.Entities;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using Ganjeh.Application.Interfaces;
 
 namespace Ganjeh.Application.Services
 {

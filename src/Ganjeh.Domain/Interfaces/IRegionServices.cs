@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ganjeh.Domain.Entities;
 
-namespace Ganjeh.Application.Interfaces
+namespace Ganjeh.Domain.Interfaces
 {
     public interface IRegionServices
     {
