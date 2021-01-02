@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Ganjeh.Api.Areas.Customer.Models
+namespace Ganjeh.Api.Areas.Admin.Models
 {
     public class RegionCountryInsert
     {

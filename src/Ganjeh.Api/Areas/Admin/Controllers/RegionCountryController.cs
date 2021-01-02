@@ -1,15 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Ganjeh.Api.Areas.Customer.Base;
-using Ganjeh.Api.Areas.Customer.Models;
+﻿using System.Threading.Tasks;
+using Ganjeh.Api.Areas.Admin.Base;
+using Ganjeh.Api.Areas.Admin.Models;
 using Ganjeh.Domain.Entities;
 using Ganjeh.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace Ganjeh.Api.Areas.Customer.Controllers
+namespace Ganjeh.Api.Areas.Admin.Controllers
 {
-    public class RegionCountryController : CustomerApiController
+    public class RegionCountryController : AdminApiController
     {
         private readonly IRegionServices regionServices;
         private readonly ILogger<RegionCountryController> _logger;
