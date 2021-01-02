@@ -45,5 +45,30 @@ namespace Ganjeh.Api.Areas.Customer.Controllers
             }
             return BadRequest(result);
         }
+        [HttpPut]
+        public async Task<IActionResult> Put([FromBody] RegionCountryUpdate model)
+        {
+            RegionCountry regionCountry = new RegionCountry()
+            {
+                Id = model.Id,
+                Title = model.Title
+            };
+            var result = await regionServices.UpdateCountry(regionCountry);
+            if (result.Status)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+        [HttpDelete]
+        public async Task<IActionResult> Delete([FromBody] RegionCountryDelete model)
+        {
+            var result = await regionServices.RemoveCountry(model.Id);
+            if (result.Status)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
     }
 }

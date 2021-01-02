@@ -48,25 +48,24 @@ namespace Ganjeh.Infrastructure
             if (entity == null)
                 throw new ArgumentNullException();
 
-            entity.Removed = true;
-            await Update(entity);
+            appDbContext.Set<T>().Remove(entity);
+            await appDbContext.SaveChangesAsync();
             return true;
         }
 
         public async Task<T> FindById(Guid Id)
         {
-            return await appDbContext.Set<T>().AsNoTracking().Where(x => !x.Removed).FirstOrDefaultAsync(x => x.Id == Id);
+            return await appDbContext.Set<T>().AsNoTracking().FirstOrDefaultAsync(x => x.Id == Id);
         }
 
         public async Task<ICollection<T>> GetAll()
         {
-            return await appDbContext.Set<T>().AsNoTracking().Where(x => !x.Removed).OrderByDescending(x => x.Created).ToListAsync();
+            return await appDbContext.Set<T>().AsNoTracking().OrderByDescending(x => x.Created).ToListAsync();
         }
         public Task<ICollection<T>> GetList(int pageSize, int pageNumber, Func<T, bool> condition)
         {
             List<T> list = appDbContext.Set<T>()
                 .AsNoTracking()
-                .Where(x => !x.Removed)
                 .Where(condition)
                 .OrderByDescending(x => x.Created)
                 .Skip((pageNumber - 1) * pageSize)
