@@ -6,6 +6,7 @@ namespace Ganjeh.Domain.Interfaces
 {
     public interface IRegionServices
     {
+        Task<RegionCountry> AddCountry(RegionCountry regionCountry);
         Task<ICollection<RegionCountry>> GetCountries();
     }
 }

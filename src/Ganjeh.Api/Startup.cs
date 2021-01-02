@@ -1,6 +1,7 @@
 using Ganjeh.Api.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,6 +24,8 @@ namespace Ganjeh.Api
             Core.Auth.Init.ConfigureServices(services, Configuration);
             Ganjeh.Infrastructure.Init.ConfigureServices(services, Configuration);
             Ganjeh.Application.Init.ConfigureServices(services, Configuration);
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

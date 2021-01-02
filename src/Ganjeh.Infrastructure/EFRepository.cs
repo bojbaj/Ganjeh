@@ -5,23 +5,38 @@ using System.Threading.Tasks;
 using Ganjeh.Domain.Base;
 using Ganjeh.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace Ganjeh.Infrastructure
 {
     public class EFRepository<T> : IRepository<T> where T : BaseEntity
     {
         private readonly AppDbContext appDbContext;
+        private readonly HttpContext httpContext;
 
-        public EFRepository(AppDbContext appDbContext)
+        public EFRepository(AppDbContext appDbContext, IHttpContextAccessor httpContextAccessor)
         {
             this.appDbContext = appDbContext;
+            this.httpContext = httpContextAccessor.HttpContext;
+        }
+
+        private Guid CurrentUserId()
+        {
+            if (httpContext.User != null)
+            {
+                string IdValue = httpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
+                return Guid.Parse(IdValue);
+            }
+            return Guid.Empty;
         }
 
         public async Task<T> Add(T entity)
         {
+            entity.Id = Guid.NewGuid();
             entity.Created = DateTime.Now;
             entity.LastModified = DateTime.Now;
-            entity.ModifiedBy = Guid.Empty;
+            entity.ModifiedBy = CurrentUserId();
             await appDbContext.Set<T>().AddAsync(entity);
             await appDbContext.SaveChangesAsync();
             return entity;
@@ -61,7 +76,7 @@ namespace Ganjeh.Infrastructure
         public async Task<T> Update(T entity)
         {
             entity.LastModified = DateTime.Now;
-            entity.ModifiedBy = Guid.Empty;
+            entity.ModifiedBy = CurrentUserId();
             appDbContext.Set<T>().Update(entity);
             await appDbContext.SaveChangesAsync();
             return entity;

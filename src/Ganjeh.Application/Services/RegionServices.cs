@@ -16,7 +16,10 @@ namespace Ganjeh.Application.Services
         public async Task<ICollection<RegionCountry>> GetCountries()
         {
             return await regionCountryRepo.GetAll();
-
+        }
+        public async Task<RegionCountry> AddCountry(RegionCountry regionCountry)
+        {
+            return await regionCountryRepo.Add(regionCountry);
         }
     }
 }

@@ -14,9 +14,4 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.1" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Ganjeh.Infrastructure\Ganjeh.Infrastructure.csproj" />
-  </ItemGroup>
-
 </Project>
