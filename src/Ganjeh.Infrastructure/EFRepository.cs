@@ -58,18 +58,29 @@ namespace Ganjeh.Infrastructure
             return await appDbContext.Set<T>().AsNoTracking().FirstOrDefaultAsync(x => x.Id == Id);
         }
 
-        public async Task<ICollection<T>> GetAll()
+        public Task<ICollection<T>> GetList(Func<T, bool> condition = null, int pageSize = 0, int pageNumber = 0)
         {
-            return await appDbContext.Set<T>().AsNoTracking().OrderByDescending(x => x.Created).ToListAsync();
-        }
-        public Task<ICollection<T>> GetList(int pageSize, int pageNumber, Func<T, bool> condition)
-        {
-            List<T> list = appDbContext.Set<T>()
+            IQueryable<T> query = appDbContext.Set<T>()
                 .AsNoTracking()
+                .AsQueryable();
+
+            if (condition != null)
+            {
+                query = query
                 .Where(condition)
-                .OrderByDescending(x => x.Created)
+                .AsQueryable();
+            }
+
+            query = query
+                .OrderByDescending(x => x.Created);
+
+            if (pageSize > 0)
+            {
+                query = query
                 .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
+                .Take(pageSize);
+            }
+            List<T> list = query
                 .ToList();
             return Task.FromResult<ICollection<T>>(list);
         }
