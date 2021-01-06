@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Ganjeh.Api.Areas.Admin.Base;
 using Ganjeh.Api.Areas.Admin.Models.Regions;
 using Ganjeh.Domain.Entities;
@@ -9,21 +8,21 @@ using Microsoft.Extensions.Logging;
 
 namespace Ganjeh.Api.Areas.Admin.Controllers
 {
-    public class RegionCityController : AdminApiController
+    public class RegionCountriesController : AdminApiController
     {
         private readonly IRegionServices regionServices;
-        private readonly ILogger<RegionCityController> _logger;
+        private readonly ILogger<RegionCountriesController> _logger;
 
-        public RegionCityController(IRegionServices regionServices, ILogger<RegionCityController> logger)
+        public RegionCountriesController(IRegionServices regionServices, ILogger<RegionCountriesController> logger)
         {
             this.regionServices = regionServices;
             _logger = logger;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get(Guid StateId)
+        public async Task<IActionResult> Get()
         {
-            var result = await regionServices.GetCities(StateId);
+            var result = await regionServices.GetCountries();
             if (result.Status)
             {
                 return Ok(result);
@@ -32,14 +31,13 @@ namespace Ganjeh.Api.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] RegionCityInsert model)
+        public async Task<IActionResult> Post([FromBody] RegionCountryInsert model)
         {
-            RegionCity regionCity = new RegionCity()
+            RegionCountry regionCountry = new RegionCountry()
             {
-                Title = model.Title,
-                RegionStateId = model.StateId
+                Title = model.Title
             };
-            var result = await regionServices.AddCity(regionCity);
+            var result = await regionServices.AddCountry(regionCountry);
             if (result.Status)
             {
                 return Ok(result);
@@ -47,15 +45,14 @@ namespace Ganjeh.Api.Areas.Admin.Controllers
             return BadRequest(result);
         }
         [HttpPut]
-        public async Task<IActionResult> Put([FromBody] RegionCityUpdate model)
+        public async Task<IActionResult> Put([FromBody] RegionCountryUpdate model)
         {
-            RegionCity regionCity = new RegionCity()
+            RegionCountry regionCountry = new RegionCountry()
             {
                 Id = model.Id,
-                Title = model.Title,
-                RegionStateId = model.StateId
+                Title = model.Title
             };
-            var result = await regionServices.UpdateCity(regionCity);
+            var result = await regionServices.UpdateCountry(regionCountry);
             if (result.Status)
             {
                 return Ok(result);
@@ -63,9 +60,9 @@ namespace Ganjeh.Api.Areas.Admin.Controllers
             return BadRequest(result);
         }
         [HttpDelete]
-        public async Task<IActionResult> Delete([FromBody] RegionCityDelete model)
+        public async Task<IActionResult> Delete([FromBody] RegionCountryDelete model)
         {
-            var result = await regionServices.RemoveCity(model.Id);
+            var result = await regionServices.RemoveCountry(model.Id);
             if (result.Status)
             {
                 return Ok(result);

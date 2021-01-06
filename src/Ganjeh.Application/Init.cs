@@ -1,3 +1,4 @@
+using AutoMapper;
 using Ganjeh.Application.Services;
 using Ganjeh.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ namespace Ganjeh.Application
     {
         public static void ConfigureServices(IServiceCollection services, IConfiguration Configuration)
         {
+            services.AddAutoMapper(typeof(Init));
             services.AddScoped<IRegionServices, RegionServices>();
         }
     }

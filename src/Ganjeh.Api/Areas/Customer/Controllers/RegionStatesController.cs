@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Ganjeh.Api.Areas.Customer.Base;
 using Ganjeh.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -6,21 +7,21 @@ using Microsoft.Extensions.Logging;
 
 namespace Ganjeh.Api.Areas.Customer.Controllers
 {
-    public class RegionCountryController : CustomerApiController
+    public class RegionStatesController : CustomerApiController
     {
         private readonly IRegionServices regionServices;
-        private readonly ILogger<RegionCountryController> _logger;
+        private readonly ILogger<RegionStatesController> _logger;
 
-        public RegionCountryController(IRegionServices regionServices, ILogger<RegionCountryController> logger)
+        public RegionStatesController(IRegionServices regionServices, ILogger<RegionStatesController> logger)
         {
             this.regionServices = regionServices;
             _logger = logger;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get()
+        [HttpGet("{countryId}")]
+        public async Task<IActionResult> Get(Guid countryId)
         {
-            var result = await regionServices.GetCountries();
+            var result = await regionServices.GetStates(countryId);
             if (result.Status)
             {
                 return Ok(result);

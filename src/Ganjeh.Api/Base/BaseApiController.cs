@@ -6,7 +6,7 @@ namespace Ganjeh.Api.Base
 {
     [ApiController]
     [EnableCors("ApiCorsPolicy")]
-    [Route("/api/[area]/[controller]")]
+    [Route("/api/v1/[area]/[controller]")]
     public class BaseApiController : ControllerBase
     {
 

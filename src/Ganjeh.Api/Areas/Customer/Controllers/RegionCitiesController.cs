@@ -7,21 +7,21 @@ using Microsoft.Extensions.Logging;
 
 namespace Ganjeh.Api.Areas.Customer.Controllers
 {
-    public class RegionStateController : CustomerApiController
+    public class RegionCitiesController : CustomerApiController
     {
         private readonly IRegionServices regionServices;
-        private readonly ILogger<RegionStateController> _logger;
+        private readonly ILogger<RegionCitiesController> _logger;
 
-        public RegionStateController(IRegionServices regionServices, ILogger<RegionStateController> logger)
+        public RegionCitiesController(IRegionServices regionServices, ILogger<RegionCitiesController> logger)
         {
             this.regionServices = regionServices;
             _logger = logger;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get(Guid CountryId)
+        [HttpGet("{stateId}")]
+        public async Task<IActionResult> Get(Guid stateId)
         {
-            var result = await regionServices.GetStates(CountryId);
+            var result = await regionServices.GetCities(stateId);
             if (result.Status)
             {
                 return Ok(result);
