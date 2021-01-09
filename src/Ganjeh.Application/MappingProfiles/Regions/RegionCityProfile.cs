@@ -9,6 +9,7 @@ namespace Ganjeh.Application.MappingProfiles.Regions
         public RegionCityProfile()
         {
             CreateMap<RegionCity, CityDTO>()
+                .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.RegionState))                
                 .ReverseMap();
         }
     }

@@ -35,7 +35,7 @@ namespace Ganjeh.Application.Services
             }
             catch (Exception ex)
             {
-                return new TypedResult<ICollection<CountryDTO>>(false, ex.Message, null);
+                return new TypedResult<ICollection<CountryDTO>>(ex);
             }
         }
         public async Task<TypedResult<CountryDTO>> AddCountry(RegionCountry regionCountry)
@@ -52,7 +52,7 @@ namespace Ganjeh.Application.Services
             }
             catch (Exception ex)
             {
-                return new TypedResult<CountryDTO>(false, ex.Message, null);
+                return new TypedResult<CountryDTO>(ex);
             }
         }
         public async Task<TypedResult<CountryDTO>> UpdateCountry(RegionCountry regionCountry)
@@ -71,7 +71,7 @@ namespace Ganjeh.Application.Services
             }
             catch (Exception ex)
             {
-                return new TypedResult<CountryDTO>(false, ex.Message, null);
+                return new TypedResult<CountryDTO>(ex);
             }
         }
         public async Task<TypedResult<Boolean>> RemoveCountry(Guid Id)
@@ -86,7 +86,7 @@ namespace Ganjeh.Application.Services
             }
             catch (Exception ex)
             {
-                return new TypedResult<Boolean>(false, ex.Message, false);
+                return new TypedResult<Boolean>(ex);
             }
         }
 
@@ -95,12 +95,17 @@ namespace Ganjeh.Application.Services
             try
             {
                 ICollection<RegionState> result = await regionStateRepo
-                    .GetList(condition: x => x.RegionCountryId.Equals(CountryId), pageSize: pageSize, pageNumber: pageNumber);
+                    .GetList(
+                        condition: x => x.RegionCountryId.Equals(CountryId),
+                        pageSize: pageSize,
+                        pageNumber: pageNumber,
+                        includes: $"{nameof(RegionCountry)}"
+                        );
                 return new TypedResult<ICollection<StateDTO>>(_mapper.Map<ICollection<StateDTO>>(result));
             }
             catch (Exception ex)
             {
-                return new TypedResult<ICollection<StateDTO>>(false, ex.Message, null);
+                return new TypedResult<ICollection<StateDTO>>(ex);
             }
         }
 
@@ -118,7 +123,7 @@ namespace Ganjeh.Application.Services
             }
             catch (Exception ex)
             {
-                return new TypedResult<StateDTO>(false, ex.Message, null);
+                return new TypedResult<StateDTO>(ex);
             }
         }
 
@@ -139,7 +144,7 @@ namespace Ganjeh.Application.Services
             }
             catch (Exception ex)
             {
-                return new TypedResult<StateDTO>(false, ex.Message, null);
+                return new TypedResult<StateDTO>(ex);
             }
         }
 
@@ -155,7 +160,7 @@ namespace Ganjeh.Application.Services
             }
             catch (Exception ex)
             {
-                return new TypedResult<Boolean>(false, ex.Message, false);
+                return new TypedResult<Boolean>(ex);
             }
         }
 
@@ -164,12 +169,16 @@ namespace Ganjeh.Application.Services
             try
             {
                 ICollection<RegionCity> result = await regionCityRepo
-                    .GetList(condition: x => x.RegionStateId.Equals(StateId), pageSize: pageSize, pageNumber: pageNumber);
+                    .GetList(
+                        condition: x => x.RegionStateId.Equals(StateId),
+                        pageSize: pageSize,
+                        pageNumber: pageNumber,
+                        includes: $"{nameof(RegionState)},{nameof(RegionState)}.{nameof(RegionCountry)}");
                 return new TypedResult<ICollection<CityDTO>>(_mapper.Map<ICollection<CityDTO>>(result));
             }
             catch (Exception ex)
             {
-                return new TypedResult<ICollection<CityDTO>>(false, ex.Message, null);
+                return new TypedResult<ICollection<CityDTO>>(ex);
             }
         }
 
@@ -187,7 +196,7 @@ namespace Ganjeh.Application.Services
             }
             catch (Exception ex)
             {
-                return new TypedResult<CityDTO>(false, ex.Message, null);
+                return new TypedResult<CityDTO>(ex);
             }
         }
 
@@ -208,7 +217,7 @@ namespace Ganjeh.Application.Services
             }
             catch (Exception ex)
             {
-                return new TypedResult<CityDTO>(false, ex.Message, null);
+                return new TypedResult<CityDTO>(ex);
             }
         }
 
@@ -224,7 +233,7 @@ namespace Ganjeh.Application.Services
             }
             catch (Exception ex)
             {
-                return new TypedResult<Boolean>(false, ex.Message, false);
+                return new TypedResult<Boolean>(ex);
             }
         }
     }

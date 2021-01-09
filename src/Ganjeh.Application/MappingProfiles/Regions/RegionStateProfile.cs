@@ -9,6 +9,7 @@ namespace Ganjeh.Application.MappingProfiles.Regions
         public RegionStateProfile()
         {
             CreateMap<RegionState, StateDTO>()
+                .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.RegionCountry))
                 .ReverseMap();
         }
     }

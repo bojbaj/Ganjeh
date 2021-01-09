@@ -7,6 +7,7 @@ using Ganjeh.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
+using System.Linq.Expressions;
 
 namespace Ganjeh.Infrastructure
 {
@@ -58,11 +59,20 @@ namespace Ganjeh.Infrastructure
             return await appDbContext.Set<T>().AsNoTracking().FirstOrDefaultAsync(x => x.Id == Id);
         }
 
-        public Task<ICollection<T>> GetList(Func<T, bool> condition = null, int pageSize = 0, int pageNumber = 0)
+        public Task<ICollection<T>> GetList(Func<T, bool> condition = null, int pageSize = 0, int pageNumber = 0, string includes = null)
         {
             IQueryable<T> query = appDbContext.Set<T>()
                 .AsNoTracking()
                 .AsQueryable();
+
+            if (!string.IsNullOrEmpty(includes))
+            {
+                foreach (string include in includes.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query
+                    .Include(include);
+                }
+            }
 
             if (condition != null)
             {
