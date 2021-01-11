@@ -1,4 +1,5 @@
 using Ganjeh.Domain.Interfaces;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +16,10 @@ namespace Ganjeh.Infrastructure
                 });
 
             services.AddScoped(typeof(IRepository<>), typeof(EFRepository<>));
+        }
+        public static void CreateAndMigrateAppDB(this AppDbContext dbContext)
+        {
+            dbContext.Database.Migrate();
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Text;
 using Core.Auth.Context;
 using Core.Auth.Models;
@@ -45,6 +46,44 @@ namespace Core.Auth
             });
 
             services.AddScoped<IUserService, UserService>();
+        }
+
+        public static void CreateAndMigrateAuthDB(this IdentityDbContext dbContext, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        {
+            dbContext.Database.Migrate();
+            SeedUsers(userManager, roleManager, dbContext);
+        }
+
+        public static void SeedUsers(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IdentityDbContext dbContext)
+        {
+            string adminRoleName = "Admin";
+            if (roleManager.FindByNameAsync(adminRoleName).Result == null)
+            {
+                IdentityRole identityRole = new IdentityRole
+                {
+                    Name = adminRoleName
+                };
+                IdentityResult result = roleManager.CreateAsync(identityRole).Result;
+            }
+
+            string adminUsername = "admin";
+            if (userManager.FindByEmailAsync(adminUsername).Result == null)
+            {
+                string adminEmail = "bojbaj@gmail.com";
+                string adminPassword = "Pwd123456@";
+                ApplicationUser identityUser = new ApplicationUser
+                {
+                    UserName = adminUsername,
+                    Email = adminEmail
+                };
+
+                IdentityResult result = userManager.CreateAsync(identityUser, adminPassword).Result;
+
+                if (result.Succeeded)
+                {
+                    userManager.AddToRoleAsync(identityUser, adminRoleName).Wait();
+                }
+            }
         }
     }
 }

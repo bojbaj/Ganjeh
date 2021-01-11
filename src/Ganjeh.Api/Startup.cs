@@ -1,7 +1,12 @@
+using Core.Auth;
+using Core.Auth.Context;
+using Core.Auth.Models;
 using Ganjeh.Api.Middlewares;
+using Ganjeh.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -71,14 +76,20 @@ namespace Ganjeh.Api
             });
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger,
+            AppDbContext appDbContext, IdentityDbContext identityDbContext,
+            UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Ganjeh.Api v1"));
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Ganjeh.Api v1"));
+
+            appDbContext.CreateAndMigrateAppDB();
+            identityDbContext.CreateAndMigrateAuthDB(userManager, roleManager);
 
             app.ConfigureExceptionHandler(logger);
 
