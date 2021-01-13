@@ -9,10 +9,10 @@ namespace Ganjeh.Api.Areas.Customer.Controllers
 {
     public class RegionStatesController : CustomerApiController
     {
-        private readonly IRegionStateServices regionServices;
+        private readonly IRegionStateService regionServices;
         private readonly ILogger<RegionStatesController> _logger;
 
-        public RegionStatesController(IRegionStateServices regionServices, ILogger<RegionStatesController> logger)
+        public RegionStatesController(IRegionStateService regionServices, ILogger<RegionStatesController> logger)
         {
             this.regionServices = regionServices;
             _logger = logger;
@@ -21,7 +21,7 @@ namespace Ganjeh.Api.Areas.Customer.Controllers
         [HttpGet("{countryId}")]
         public async Task<IActionResult> Get(Guid countryId)
         {
-            var result = await regionServices.GetStates(countryId);
+            var result = await regionServices.GetList(countryId);
             if (result.Status)
             {
                 return Ok(result);

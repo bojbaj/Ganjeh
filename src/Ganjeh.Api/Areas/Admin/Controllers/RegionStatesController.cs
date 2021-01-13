@@ -11,10 +11,10 @@ namespace Ganjeh.Api.Areas.Admin.Controllers
 {
     public class RegionStatesController : AdminApiController
     {
-        private readonly IRegionStateServices regionServices;
+        private readonly IRegionStateService regionServices;
         private readonly ILogger<RegionStatesController> _logger;
 
-        public RegionStatesController(IRegionStateServices regionServices, ILogger<RegionStatesController> logger)
+        public RegionStatesController(IRegionStateService regionServices, ILogger<RegionStatesController> logger)
         {
             this.regionServices = regionServices;
             _logger = logger;
@@ -23,7 +23,7 @@ namespace Ganjeh.Api.Areas.Admin.Controllers
         [HttpGet("{countryId}")]
         public async Task<IActionResult> Get(Guid countryId)
         {
-            var result = await regionServices.GetStates(countryId);
+            var result = await regionServices.GetList(countryId);
             if (result.Status)
             {
                 return Ok(result);
@@ -39,7 +39,7 @@ namespace Ganjeh.Api.Areas.Admin.Controllers
                 Title = model.Title,
                 RegionCountryId = model.CountryId
             };
-            var result = await regionServices.AddState(regionState);
+            var result = await regionServices.Add(regionState);
             if (result.Status)
             {
                 return Ok(result);
@@ -55,7 +55,7 @@ namespace Ganjeh.Api.Areas.Admin.Controllers
                 Title = model.Title,
                 RegionCountryId = model.CountryId
             };
-            var result = await regionServices.UpdateState(regionState);
+            var result = await regionServices.Update(regionState);
             if (result.Status)
             {
                 return Ok(result);
@@ -65,7 +65,7 @@ namespace Ganjeh.Api.Areas.Admin.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete([FromBody] RegionStateDelete model)
         {
-            var result = await regionServices.RemoveState(model.Id);
+            var result = await regionServices.Remove(model.Id);
             if (result.Status)
             {
                 return Ok(result);
