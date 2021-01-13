@@ -50,7 +50,7 @@ namespace Core.Auth
 
         public static void CreateAndMigrateAuthDB(this IdentityDbContext dbContext, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-            dbContext.Database.Migrate();
+            dbContext.Database.Migrate();            
             SeedUsers(userManager, roleManager, dbContext);
         }
 
@@ -66,10 +66,10 @@ namespace Core.Auth
                 IdentityResult result = roleManager.CreateAsync(identityRole).Result;
             }
 
-            string adminUsername = "admin";
-            if (userManager.FindByEmailAsync(adminUsername).Result == null)
+            string adminEmail = "bojbaj@gmail.com";
+            if (userManager.FindByEmailAsync(adminEmail).Result == null)
             {
-                string adminEmail = "bojbaj@gmail.com";
+                string adminUsername = "admin";
                 string adminPassword = "Pwd123456@";
                 ApplicationUser identityUser = new ApplicationUser
                 {
