@@ -11,7 +11,7 @@ using Ganjeh.Application.i18n;
 
 namespace Ganjeh.Application.Services
 {
-    public class RegionServices : IRegionServices
+    public class RegionServices : IRegionCountryServices, IRegionStateServices, IRegionCityServices
     {
         private readonly IRepository<RegionCountry> regionCountryRepo;
         private readonly IRepository<RegionState> regionStateRepo;

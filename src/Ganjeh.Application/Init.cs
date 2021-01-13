@@ -12,7 +12,9 @@ namespace Ganjeh.Application
         public static void ConfigureServices(IServiceCollection services, IConfiguration Configuration)
         {
             services.AddAutoMapper(typeof(Init));
-            services.AddScoped<IRegionServices, RegionServices>();
+            services.AddScoped<IRegionCountryServices, RegionServices>();
+            services.AddScoped<IRegionStateServices, RegionServices>();
+            services.AddScoped<IRegionCityServices, RegionServices>();
         }
     }
 }

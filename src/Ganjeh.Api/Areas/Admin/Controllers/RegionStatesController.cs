@@ -11,10 +11,10 @@ namespace Ganjeh.Api.Areas.Admin.Controllers
 {
     public class RegionStatesController : AdminApiController
     {
-        private readonly IRegionServices regionServices;
+        private readonly IRegionStateServices regionServices;
         private readonly ILogger<RegionStatesController> _logger;
 
-        public RegionStatesController(IRegionServices regionServices, ILogger<RegionStatesController> logger)
+        public RegionStatesController(IRegionStateServices regionServices, ILogger<RegionStatesController> logger)
         {
             this.regionServices = regionServices;
             _logger = logger;
