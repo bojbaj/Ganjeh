@@ -1,6 +1,6 @@
 namespace Ganjeh.Domain.Models.DTOs.Region
 {
-    public class CountryDTO : BaseSimpleRecord
+    public class CountryDTO : BaseListItemDTORecord
     {
 
     }

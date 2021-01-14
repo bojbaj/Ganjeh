@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Ganjeh.Api.Areas.Admin.Base;
 using Ganjeh.Domain.Entities;
 using Ganjeh.Domain.Interfaces;
@@ -22,7 +23,7 @@ namespace Ganjeh.Api.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var result = await postServices.GetList();
+            var result = await postServices.GetList(PostCategoryId: Guid.Empty);
             if (result.Status)
             {
                 return Ok(result);

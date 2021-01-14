@@ -7,9 +7,13 @@ namespace Ganjeh.Domain.Filters.Validations
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            if ((value is Guid) && Guid.Empty == (Guid)value)
+            var propretyInfo = validationContext.ObjectType.GetProperty(validationContext.MemberName);
+            if (value is not Guid)
             {
-                var propretyInfo = validationContext.ObjectType.GetProperty(validationContext.MemberName);
+                return new ValidationResult($"The {propretyInfo.Name} field format is invalid.");
+            }
+            if (Guid.Empty == (Guid)value)
+            {
                 return new ValidationResult($"The {propretyInfo.Name} field is required.");
             }
             return null;

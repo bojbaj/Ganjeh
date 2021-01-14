@@ -10,9 +10,9 @@ namespace Ganjeh.Domain.Entities
         public RegionCity RegionCity { get; set; }
         public string AddressLine { get; set; }
         public string ZipCode { get; set; }
-        [Column(TypeName = "decimal(8,6)")]
+        [Column(TypeName = "decimal(10,6)")]
         public decimal Lat { get; set; }
-        [Column(TypeName = "decimal(8,6)")]
+        [Column(TypeName = "decimal(10,6)")]
         public decimal Lng { get; set; }
     }
 }

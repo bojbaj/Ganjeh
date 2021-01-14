@@ -23,11 +23,16 @@ namespace Ganjeh.Application.Services
             _mapper = mapper;
         }
 
-        public async Task<TypedResult<ICollection<PostDTO>>> GetList()
+        public async Task<TypedResult<ICollection<PostDTO>>> GetList(Guid PostCategoryId, int pageSize = 0, int pageNumber = 0)
         {
             try
             {
-                ICollection<Post> result = await postRepo.GetList();
+                ICollection<Post> result = await postRepo.GetList(
+                    condition: x => PostCategoryId.Equals(Guid.Empty) || x.PostCategoryId.Equals(PostCategoryId),
+                    pageSize: pageSize,
+                    pageNumber: pageNumber,
+                    includes: $"{nameof(PostCategory)},{nameof(Address)},{nameof(Address)}.{nameof(RegionCity)},Video"
+                );
                 return new TypedResult<ICollection<PostDTO>>(_mapper.Map<ICollection<PostDTO>>(result));
             }
             catch (Exception ex)
@@ -39,7 +44,7 @@ namespace Ganjeh.Application.Services
         {
             try
             {
-                Post existsRecord = (await postRepo.GetList(condition: x => x.Title.Equals(post.Title))).FirstOrDefault();
+                Post existsRecord = (await postRepo.GetList(condition: x => x.PostCategoryId.Equals(post.PostCategoryId) && x.Title.Equals(post.Title))).FirstOrDefault();
                 if (existsRecord != null)
                 {
                     throw new InvalidOperationException(ErrorMessages.THIS_RECORD_ALREADY_EXISTS);

@@ -9,7 +9,7 @@ namespace Ganjeh.Domain.Interfaces
 {
     public interface IPostService
     {
-        Task<TypedResult<ICollection<PostDTO>>> GetList();
+        Task<TypedResult<ICollection<PostDTO>>> GetList(Guid PostCategoryId, int pageSize = 0, int pageNumber = 0);
         Task<TypedResult<PostDTO>> Add(InsertPost entity);
         Task<TypedResult<PostDTO>> Update(UpdatePost entity);
         Task<TypedResult<bool>> Remove(Guid Id);

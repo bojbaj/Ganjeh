@@ -13,7 +13,9 @@ namespace Ganjeh.Application.MappingProfiles.Regions
                 .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.RegionCountry))
                 .ReverseMap();
 
-            CreateMap<InsertRegionState, RegionState>();
+            CreateMap<InsertRegionState, RegionState>()
+                .ForMember(dest => dest.RegionCountryId, opt => opt.MapFrom(src => src.CountryId))
+                .ReverseMap();
         }
     }
 }
