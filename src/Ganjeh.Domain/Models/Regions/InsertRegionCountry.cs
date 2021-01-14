@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Ganjeh.Api.Areas.Admin.Models.Regions
+namespace Ganjeh.Domain.Models.Regions
 {
-    public class RegionCountryInsert
+    public class InsertRegionCountry
     {
         [Required]
         public string Title { get; set; }

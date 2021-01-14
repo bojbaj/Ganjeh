@@ -8,6 +8,7 @@ using Ganjeh.Domain.Models;
 using AutoMapper;
 using Ganjeh.Application.i18n;
 using Ganjeh.Domain.Models.DTOs.Post;
+using Ganjeh.Domain.Models.Posts;
 
 namespace Ganjeh.Application.Services
 {
@@ -34,7 +35,7 @@ namespace Ganjeh.Application.Services
                 return new TypedResult<ICollection<PostDTO>>(ex);
             }
         }
-        public async Task<TypedResult<PostDTO>> Add(Post post)
+        public async Task<TypedResult<PostDTO>> Add(InsertPost post)
         {
             try
             {
@@ -43,7 +44,9 @@ namespace Ganjeh.Application.Services
                 {
                     throw new InvalidOperationException(ErrorMessages.THIS_RECORD_ALREADY_EXISTS);
                 }
-                Post result = await postRepo.Add(post);
+
+                Post entity = _mapper.Map<Post>(post);
+                Post result = await postRepo.Add(entity);
                 return new TypedResult<PostDTO>(_mapper.Map<PostDTO>(result));
             }
             catch (Exception ex)
@@ -51,7 +54,7 @@ namespace Ganjeh.Application.Services
                 return new TypedResult<PostDTO>(ex);
             }
         }
-        public async Task<TypedResult<PostDTO>> Update(Post post)
+        public async Task<TypedResult<PostDTO>> Update(UpdatePost post)
         {
             try
             {

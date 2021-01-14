@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Ganjeh.Api.Areas.Admin.Base;
-using Ganjeh.Api.Areas.Admin.Models.Regions;
 using Ganjeh.Domain.Entities;
 using Ganjeh.Domain.Interfaces;
+using Ganjeh.Domain.Models.Regions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -32,14 +32,9 @@ namespace Ganjeh.Api.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] RegionCityInsert model)
+        public async Task<IActionResult> Post([FromBody] InsertRegionCity model)
         {
-            RegionCity regionCity = new RegionCity()
-            {
-                Title = model.Title,
-                RegionStateId = model.StateId
-            };
-            var result = await regionServices.Add(regionCity);
+            var result = await regionServices.Add(model);
             if (result.Status)
             {
                 return Ok(result);
@@ -47,15 +42,9 @@ namespace Ganjeh.Api.Areas.Admin.Controllers
             return BadRequest(result);
         }
         [HttpPut]
-        public async Task<IActionResult> Put([FromBody] RegionCityUpdate model)
+        public async Task<IActionResult> Put([FromBody] UpdateRegionCity model)
         {
-            RegionCity regionCity = new RegionCity()
-            {
-                Id = model.Id,
-                Title = model.Title,
-                RegionStateId = model.StateId
-            };
-            var result = await regionServices.Update(regionCity);
+            var result = await regionServices.Update(model);
             if (result.Status)
             {
                 return Ok(result);
@@ -63,7 +52,7 @@ namespace Ganjeh.Api.Areas.Admin.Controllers
             return BadRequest(result);
         }
         [HttpDelete]
-        public async Task<IActionResult> Delete([FromBody] RegionCityDelete model)
+        public async Task<IActionResult> Delete([FromBody] DeleteRegionCity model)
         {
             var result = await regionServices.Remove(model.Id);
             if (result.Status)

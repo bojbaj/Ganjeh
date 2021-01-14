@@ -1,6 +1,7 @@
 using Ganjeh.Application.MappingProfiles.Base;
 using Ganjeh.Domain.Entities;
 using Ganjeh.Domain.Models.DTOs.Region;
+using Ganjeh.Domain.Models.Regions;
 
 namespace Ganjeh.Application.MappingProfiles.Regions
 {
@@ -10,6 +11,8 @@ namespace Ganjeh.Application.MappingProfiles.Regions
         {
             CreateMap<RegionCountry, CountryDTO>()
                 .ReverseMap();
+
+            CreateMap<InsertRegionCountry, RegionCountry>();
         }
     }
 }

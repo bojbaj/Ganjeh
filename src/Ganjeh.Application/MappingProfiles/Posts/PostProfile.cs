@@ -1,7 +1,7 @@
 using Ganjeh.Application.MappingProfiles.Base;
 using Ganjeh.Domain.Entities;
 using Ganjeh.Domain.Models.DTOs.Post;
-using Ganjeh.Domain.Models.DTOs.Region;
+using Ganjeh.Domain.Models.Posts;
 
 namespace Ganjeh.Application.MappingProfiles.Regions
 {
@@ -12,6 +12,8 @@ namespace Ganjeh.Application.MappingProfiles.Regions
             CreateMap<Post, PostDTO>()
                 .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.PostCategory))
                 .ReverseMap();
+
+            CreateMap<InsertPost, Post>();
         }
     }
 }

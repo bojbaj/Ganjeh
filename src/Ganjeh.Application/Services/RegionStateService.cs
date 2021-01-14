@@ -8,6 +8,7 @@ using Ganjeh.Domain.Models;
 using Ganjeh.Domain.Models.DTOs.Region;
 using AutoMapper;
 using Ganjeh.Application.i18n;
+using Ganjeh.Domain.Models.Regions;
 
 namespace Ganjeh.Application.Services
 {
@@ -41,16 +42,18 @@ namespace Ganjeh.Application.Services
             }
         }
 
-        public async Task<TypedResult<StateDTO>> Add(RegionState regionState)
+        public async Task<TypedResult<StateDTO>> Add(InsertRegionState regionState)
         {
             try
             {
                 ICollection<RegionState> existsRecords = await regionStateRepo
-                    .GetList(condition: x => x.RegionCountryId == regionState.RegionCountryId && x.Title.Equals(regionState.Title));
+                    .GetList(condition: x => x.RegionCountryId == regionState.CountryId && x.Title.Equals(regionState.Title));
 
                 if (existsRecords.Any())
                     throw new InvalidOperationException(ErrorMessages.THIS_RECORD_ALREADY_EXISTS);
-                RegionState result = await regionStateRepo.Add(regionState);
+
+                RegionState entity = _mapper.Map<RegionState>(regionState);
+                RegionState result = await regionStateRepo.Add(entity);
                 return new TypedResult<StateDTO>(_mapper.Map<StateDTO>(result));
             }
             catch (Exception ex)
@@ -59,7 +62,7 @@ namespace Ganjeh.Application.Services
             }
         }
 
-        public async Task<TypedResult<StateDTO>> Update(RegionState regionState)
+        public async Task<TypedResult<StateDTO>> Update(UpdateRegionState regionState)
         {
             try
             {
@@ -69,7 +72,7 @@ namespace Ganjeh.Application.Services
                 if (existsRecord == null)
                     throw new InvalidOperationException(ErrorMessages.THIS_RECORD_DOES_NOT_EXISTS);
 
-                existsRecord.RegionCountryId = regionState.RegionCountryId;
+                existsRecord.RegionCountryId = regionState.CountryId;
                 existsRecord.Title = regionState.Title;
                 RegionState result = await regionStateRepo.Update(existsRecord);
                 return new TypedResult<StateDTO>(_mapper.Map<StateDTO>(result));

@@ -8,6 +8,7 @@ using Ganjeh.Domain.Models;
 using Ganjeh.Domain.Models.DTOs.Region;
 using AutoMapper;
 using Ganjeh.Application.i18n;
+using Ganjeh.Domain.Models.Regions;
 
 namespace Ganjeh.Application.Services
 {
@@ -34,7 +35,7 @@ namespace Ganjeh.Application.Services
                 return new TypedResult<ICollection<CountryDTO>>(ex);
             }
         }
-        public async Task<TypedResult<CountryDTO>> Add(RegionCountry regionCountry)
+        public async Task<TypedResult<CountryDTO>> Add(InsertRegionCountry regionCountry)
         {
             try
             {
@@ -43,7 +44,9 @@ namespace Ganjeh.Application.Services
                 {
                     throw new InvalidOperationException(ErrorMessages.THIS_RECORD_ALREADY_EXISTS);
                 }
-                RegionCountry result = await regionCountryRepo.Add(regionCountry);
+
+                RegionCountry entity = _mapper.Map<RegionCountry>(regionCountry);
+                RegionCountry result = await regionCountryRepo.Add(entity);
                 return new TypedResult<CountryDTO>(_mapper.Map<CountryDTO>(result));
             }
             catch (Exception ex)
@@ -51,7 +54,7 @@ namespace Ganjeh.Application.Services
                 return new TypedResult<CountryDTO>(ex);
             }
         }
-        public async Task<TypedResult<CountryDTO>> Update(RegionCountry regionCountry)
+        public async Task<TypedResult<CountryDTO>> Update(UpdateRegionCountry regionCountry)
         {
             try
             {
@@ -85,5 +88,5 @@ namespace Ganjeh.Application.Services
                 return new TypedResult<Boolean>(ex);
             }
         }
-   }
+    }
 }

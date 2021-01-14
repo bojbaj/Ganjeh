@@ -1,15 +1,15 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using Ganjeh.Api.Filters.Validations;
+using Ganjeh.Domain.Filters.Validations;
 
-namespace Ganjeh.Api.Areas.Admin.Models.Regions
+namespace Ganjeh.Domain.Models.Regions
 {
-    public class RegionStateInsert
+    public class InsertRegionCity
     {
         [Required]
         public string Title { get; set; }
         [Required]
         [NonEmptyGuid]
-        public Guid CountryId { get; set; }
+        public Guid StateId { get; set; }
     }
 }

@@ -8,6 +8,7 @@ using Ganjeh.Domain.Models;
 using Ganjeh.Domain.Models.DTOs.Region;
 using AutoMapper;
 using Ganjeh.Application.i18n;
+using Ganjeh.Domain.Models.Regions;
 
 namespace Ganjeh.Application.Services
 {
@@ -21,7 +22,7 @@ namespace Ganjeh.Application.Services
             this.regionCityRepo = regionCityRepo;
             _mapper = mapper;
         }
-        
+
         public async Task<TypedResult<ICollection<CityDTO>>> GetList(Guid StateId, int pageSize = 0, int pageNumber = 0)
         {
             try
@@ -40,16 +41,18 @@ namespace Ganjeh.Application.Services
             }
         }
 
-        public async Task<TypedResult<CityDTO>> Add(RegionCity regionCity)
+        public async Task<TypedResult<CityDTO>> Add(InsertRegionCity regionCity)
         {
             try
             {
                 ICollection<RegionCity> existsRecords = await regionCityRepo
-                    .GetList(condition: x => x.RegionStateId == regionCity.RegionStateId && x.Title.Equals(regionCity.Title));
+                    .GetList(condition: x => x.RegionStateId == regionCity.StateId && x.Title.Equals(regionCity.Title));
 
                 if (existsRecords.Any())
                     throw new InvalidOperationException(ErrorMessages.THIS_RECORD_ALREADY_EXISTS);
-                RegionCity result = await regionCityRepo.Add(regionCity);
+                
+                RegionCity entity = _mapper.Map<RegionCity>(regionCity);
+                RegionCity result = await regionCityRepo.Add(entity);
                 return new TypedResult<CityDTO>(_mapper.Map<CityDTO>(result));
             }
             catch (Exception ex)
@@ -58,7 +61,7 @@ namespace Ganjeh.Application.Services
             }
         }
 
-        public async Task<TypedResult<CityDTO>> Update(RegionCity regionCity)
+        public async Task<TypedResult<CityDTO>> Update(UpdateRegionCity regionCity)
         {
             try
             {
@@ -68,7 +71,7 @@ namespace Ganjeh.Application.Services
                 if (existsRecord == null)
                     throw new InvalidOperationException(ErrorMessages.THIS_RECORD_DOES_NOT_EXISTS);
 
-                existsRecord.RegionStateId = regionCity.RegionStateId;
+                existsRecord.RegionStateId = regionCity.StateId;
                 existsRecord.Title = regionCity.Title;
                 RegionCity result = await regionCityRepo.Update(existsRecord);
                 return new TypedResult<CityDTO>(_mapper.Map<CityDTO>(result));

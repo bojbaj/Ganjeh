@@ -1,5 +1,4 @@
 using Ganjeh.Api.Base;
-using Ganjeh.Api.Filters.UserVerification;
 using Ganjeh.Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

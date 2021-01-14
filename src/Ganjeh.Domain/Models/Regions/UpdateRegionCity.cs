@@ -1,11 +1,14 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using Ganjeh.Api.Filters.Validations;
+using Ganjeh.Domain.Filters.Validations;
 
-namespace Ganjeh.Api.Areas.Admin.Models.Regions
+namespace Ganjeh.Domain.Models.Regions
 {
-    public class RegionCityInsert
+    public class UpdateRegionCity
     {
+        [Required]
+        [NonEmptyGuid]
+        public Guid Id { get; set; }
         [Required]
         public string Title { get; set; }
         [Required]

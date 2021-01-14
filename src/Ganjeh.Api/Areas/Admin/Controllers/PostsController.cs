@@ -8,21 +8,21 @@ using Microsoft.Extensions.Logging;
 
 namespace Ganjeh.Api.Areas.Admin.Controllers
 {
-    public class PostCategoriesController : AdminApiController
+    public class PostsController : AdminApiController
     {
-        private readonly IPostCategoryService postCategoryServices;
-        private readonly ILogger<PostCategoriesController> _logger;
+        private readonly IPostService postServices;
+        private readonly ILogger<PostsController> _logger;
 
-        public PostCategoriesController(IPostCategoryService postCategoryServices, ILogger<PostCategoriesController> logger)
+        public PostsController(IPostService postServices, ILogger<PostsController> logger)
         {
-            this.postCategoryServices = postCategoryServices;
+            this.postServices = postServices;
             _logger = logger;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var result = await postCategoryServices.GetAll();
+            var result = await postServices.GetList();
             if (result.Status)
             {
                 return Ok(result);
@@ -31,9 +31,9 @@ namespace Ganjeh.Api.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] InsertPostCategory model)
+        public async Task<IActionResult> Post([FromBody] InsertPost model)
         {
-            var result = await postCategoryServices.Add(model);
+            var result = await postServices.Add(model);
             if (result.Status)
             {
                 return Ok(result);
@@ -41,9 +41,9 @@ namespace Ganjeh.Api.Areas.Admin.Controllers
             return BadRequest(result);
         }
         [HttpPut]
-        public async Task<IActionResult> Put([FromBody] UpdatePostCategory model)
+        public async Task<IActionResult> Put([FromBody] UpdatePost model)
         {
-            var result = await postCategoryServices.Update(model);
+            var result = await postServices.Update(model);
             if (result.Status)
             {
                 return Ok(result);
@@ -51,9 +51,9 @@ namespace Ganjeh.Api.Areas.Admin.Controllers
             return BadRequest(result);
         }
         [HttpDelete]
-        public async Task<IActionResult> Delete([FromBody] DeletePostCategory model)
+        public async Task<IActionResult> Delete([FromBody] DeletePost model)
         {
-            var result = await postCategoryServices.Remove(model.Id);
+            var result = await postServices.Remove(model.Id);
             if (result.Status)
             {
                 return Ok(result);

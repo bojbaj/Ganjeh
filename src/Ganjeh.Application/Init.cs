@@ -1,7 +1,6 @@
 using AutoMapper;
 using Ganjeh.Application.Services;
 using Ganjeh.Domain.Interfaces;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

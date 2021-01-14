@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Ganjeh.Api.Areas.Admin.Models.Posts
+namespace Ganjeh.Domain.Models.Posts
 {
-    public class PostCategoryInsert
+    public class InsertPostCategory
     {
         [Required]
         public string Title { get; set; }

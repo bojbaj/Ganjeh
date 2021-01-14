@@ -1,10 +1,10 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using Ganjeh.Api.Filters.Validations;
+using Ganjeh.Domain.Filters.Validations;
 
-namespace Ganjeh.Api.Areas.Admin.Models.Regions
+namespace Ganjeh.Domain.Models.Posts
 {
-    public class RegionCountryUpdate
+    public class UpdatePost
     {
         [Required]
         [NonEmptyGuid]

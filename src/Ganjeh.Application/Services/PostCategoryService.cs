@@ -8,6 +8,7 @@ using Ganjeh.Domain.Models;
 using AutoMapper;
 using Ganjeh.Application.i18n;
 using Ganjeh.Domain.Models.DTOs.Post;
+using Ganjeh.Domain.Models.Posts;
 
 namespace Ganjeh.Application.Services
 {
@@ -34,7 +35,7 @@ namespace Ganjeh.Application.Services
                 return new TypedResult<ICollection<PostCategoryDTO>>(ex);
             }
         }
-        public async Task<TypedResult<PostCategoryDTO>> Add(PostCategory postCategory)
+        public async Task<TypedResult<PostCategoryDTO>> Add(InsertPostCategory postCategory)
         {
             try
             {
@@ -43,7 +44,9 @@ namespace Ganjeh.Application.Services
                 {
                     throw new InvalidOperationException(ErrorMessages.THIS_RECORD_ALREADY_EXISTS);
                 }
-                PostCategory result = await postCategoryRepo.Add(postCategory);
+
+                PostCategory entity = _mapper.Map<PostCategory>(postCategory);
+                PostCategory result = await postCategoryRepo.Add(entity);
                 return new TypedResult<PostCategoryDTO>(_mapper.Map<PostCategoryDTO>(result));
             }
             catch (Exception ex)
@@ -51,7 +54,7 @@ namespace Ganjeh.Application.Services
                 return new TypedResult<PostCategoryDTO>(ex);
             }
         }
-        public async Task<TypedResult<PostCategoryDTO>> Update(PostCategory postCategory)
+        public async Task<TypedResult<PostCategoryDTO>> Update(UpdatePostCategory postCategory)
         {
             try
             {

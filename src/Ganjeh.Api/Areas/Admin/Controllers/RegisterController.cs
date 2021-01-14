@@ -2,7 +2,6 @@
 using Core.Auth;
 using Core.Auth.Models;
 using Ganjeh.Api.Areas.Admin.Base;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
