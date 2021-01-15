@@ -5,7 +5,7 @@ namespace Core.Auth
 {
     public interface IUserService
     {
-        Task<LoginResponse> LoginAsync(LoginRequest model);
-        Task<RegisterResponse> RegisterAsync(RegisterRequest req);
+        Task<TypedResult<LoginResponse>> LoginAsync(LoginRequest model);
+        Task<TypedResult<RegisterResponse>> RegisterAsync(RegisterRequest req);
     }
 }

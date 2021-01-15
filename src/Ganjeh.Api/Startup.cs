@@ -32,6 +32,17 @@ namespace Ganjeh.Api
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("ApiCorsPolicy",
+                    builder => builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        //.AllowCredentials()
+                        );
+            });
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -62,17 +73,6 @@ namespace Ganjeh.Api
                     }
                 });
 
-            });
-
-            services.AddCors(options =>
-            {
-                options.AddPolicy("ApiCorsPolicy",
-                    builder => builder
-                        .AllowAnyOrigin()
-                        .AllowAnyMethod()
-                        .AllowAnyHeader()
-                        //.AllowCredentials()
-                        );
             });
         }
 

@@ -21,9 +21,14 @@ namespace Ganjeh.Api.Areas.Admin.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<LoginResponse> Post([FromBody] LoginRequest loginRequest)
+        public async Task<IActionResult> Post([FromBody] LoginRequest loginRequest)
         {
-            return await userService.LoginAsync(loginRequest);
+            var result = await userService.LoginAsync(loginRequest);
+            if (result.Status)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
         }
     }
 }

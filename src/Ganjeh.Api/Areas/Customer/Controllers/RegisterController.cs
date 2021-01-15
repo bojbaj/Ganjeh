@@ -21,9 +21,14 @@ namespace Ganjeh.Api.Areas.Customer.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<RegisterResponse> Post([FromBody] RegisterRequest registerRequest)
+        public async Task<IActionResult> Post([FromBody] RegisterRequest registerRequest)
         {
-            return await userService.RegisterAsync(registerRequest);
+            var result = await userService.RegisterAsync(registerRequest);
+            if (result.Status)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
         }
     }
 }

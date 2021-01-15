@@ -21,11 +21,11 @@ namespace Core.Auth
             _configuration = configuration;
         }
 
-        public async Task<RegisterResponse> RegisterAsync(RegisterRequest req)
+        public async Task<TypedResult<RegisterResponse>> RegisterAsync(RegisterRequest req)
         {
             var userExists = await userManager.FindByNameAsync(req.Username);
             if (userExists != null)
-                return new RegisterResponse { Status = false, Message = "User already exists!" };
+                return new TypedResult<RegisterResponse>(false, "User already exists!", null);
 
             ApplicationUser user = new ApplicationUser()
             {
@@ -35,18 +35,22 @@ namespace Core.Auth
             };
             var result = await userManager.CreateAsync(user, req.Password);
             if (!result.Succeeded)
-                return new RegisterResponse { Status = false, Message = "User creation failed! Please check user details and try again." };
+                return new TypedResult<RegisterResponse>(false, "User creation failed! Please check user details and try again.", null);
 
             LoginRequest loginRequest = new LoginRequest()
             {
                 Username = req.Username,
                 Password = req.Password
             };
-            LoginResponse loginResponse = await LoginAsync(loginRequest);
-            return new RegisterResponse { Status = true, Message = "User created successfully!", Token = loginResponse.Token, Expiration = loginResponse.Expiration };
+            TypedResult<LoginResponse> loginResponse = await LoginAsync(loginRequest);
+            if (!loginResponse.Status)
+            {
+                return new TypedResult<RegisterResponse>(false, loginResponse.Message, null);
+            }
+            return new TypedResult<RegisterResponse>(new RegisterResponse() { Token = loginResponse.Data.Token, Expiration = loginResponse.Data.Expiration });
         }
 
-        public async Task<LoginResponse> LoginAsync(LoginRequest model)
+        public async Task<TypedResult<LoginResponse>> LoginAsync(LoginRequest model)
         {
             var user = await userManager.FindByNameAsync(model.Username);
             if (user != null && await userManager.CheckPasswordAsync(user, model.Password))
@@ -75,14 +79,14 @@ namespace Core.Auth
                     signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
                     );
 
-                return new LoginResponse()
+                var loginResponse = new LoginResponse()
                 {
                     Token = new JwtSecurityTokenHandler().WriteToken(token),
-                    Expiration = token.ValidTo,
-                    Status = true
+                    Expiration = token.ValidTo
                 };
+                return new TypedResult<LoginResponse>(loginResponse);
             }
-            return new RegisterResponse { Status = false, Message = "User name or password is invalid!" };
+            return new TypedResult<LoginResponse>(false, "User name or password is invalid!", null);
         }
 
     }
