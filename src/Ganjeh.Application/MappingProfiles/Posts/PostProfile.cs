@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Ganjeh.Application.MappingProfiles.Base;
@@ -13,47 +14,13 @@ namespace Ganjeh.Application.MappingProfiles.Regions
         {
             CreateMap<Post, PostDTO>()
                 .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.PostCategory))
+                .ForMember(dest => dest.Images, opt => opt.MapFrom(src => src.Images.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries)))
+                .ForMember(dest => dest.PhoneNumbers, opt => opt.MapFrom(src => src.PhoneNumbers.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries)))
                 .ReverseMap();
 
             CreateMap<InsertPost, Post>()
-                .ForMember(dest => dest.Video,
-                    opt => opt.MapFrom(src =>
-                    new File()
-                    {
-                        Source = src.Video,
-                        FileType = Domain.Enums.FileTypeEnum.VIDEO,
-                        RecordType = Domain.Enums.RecordTypeEnum.MAIN,
-                        Title = string.Empty
-                    })
-                )
-                .ForMember(dest => dest.Images,
-                    opt => opt.MapFrom(src =>
-                        src.OtherImages.Where(img => !string.IsNullOrEmpty(img))
-                        .Select(img => new File()
-                        {
-                            Source = img,
-                            FileType = Domain.Enums.FileTypeEnum.IMAGE,
-                            RecordType = Domain.Enums.RecordTypeEnum.OTHER,
-                            Title = string.Empty
-                        }).Append(new File()
-                        {
-                            Source = src.Image,
-                            FileType = Domain.Enums.FileTypeEnum.IMAGE,
-                            RecordType = Domain.Enums.RecordTypeEnum.MAIN,
-                            Title = string.Empty
-                        })
-                    )
-                )
-                .ForMember(dest => dest.PhoneNumbers,
-                    opt => opt.MapFrom(src =>
-                        src.PhoneNumbers
-                        .Select(phone => new Phone()
-                        {
-                            Number = phone,
-                            RecordType = Domain.Enums.RecordTypeEnum.OTHER,
-                        })
-                    )
-                )
+                .ForMember(dest => dest.PhoneNumbers, opt => opt.MapFrom(src => string.Join(",", src.PhoneNumbers)))
+                .ForMember(dest => dest.Images, opt => opt.MapFrom(src => string.Join(",", src.OtherImages)))
                 .ForMember(dest => dest.Address,
                     opt => opt.MapFrom(src => new Address()
                     {
@@ -66,6 +33,27 @@ namespace Ganjeh.Application.MappingProfiles.Regions
                 )
                 .ReverseMap();
             ;
+
+            CreateMap<UpdatePost, Post>()
+                .IncludeBase<InsertPost, Post>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Created, opt => opt.Ignore())
+                .ForMember(dest => dest.Address, opt => opt.Ignore())
+                .AfterMap(UpdateExistsData)
+                .ReverseMap();
+        }
+
+        private void UpdateExistsData(InsertPost src, Post dest)
+        {
+            dest.Address = new Address()
+            {
+                Id = dest.AddressId,
+                RegionCityId = src.RegionCityId,
+                AddressLine = src.AddressLine,
+                ZipCode = src.ZipCode,
+                Lat = src.Lat,
+                Lng = src.Lng
+            };
         }
     }
 }

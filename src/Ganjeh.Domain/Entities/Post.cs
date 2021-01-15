@@ -8,9 +8,9 @@ namespace Ganjeh.Domain.Entities
     public class Post : BaseEntity
     {
         public string Title { get; set; }
-        public Guid VideoId { get; set; }
-        public File Video { get; set; }
-        public ICollection<File> Images { get; set; }
+        public string Video { get; set; }
+        public string Image { get; set; }
+        public string Images { get; set; }
         [Column(TypeName = "money")]
         public decimal Price { get; set; }
         public string Description { get; set; }
@@ -18,7 +18,7 @@ namespace Ganjeh.Domain.Entities
         public PostCategory PostCategory { get; set; }
         public Guid AddressId { get; set; }
         public Address Address { get; set; }
-        public ICollection<Phone> PhoneNumbers { get; set; }
+        public string PhoneNumbers { get; set; }
         public string Email { get; set; }
         public string Website { get; set; }
     }

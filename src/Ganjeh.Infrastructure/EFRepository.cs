@@ -53,9 +53,22 @@ namespace Ganjeh.Infrastructure
             return true;
         }
 
-        public async Task<T> FindById(Guid Id)
+        public async Task<T> FindById(Guid Id, string includes = null)
         {
-            return await appDbContext.Set<T>().AsNoTracking().FirstOrDefaultAsync(x => x.Id == Id);
+            IQueryable<T> query = appDbContext.Set<T>()
+                           .AsNoTracking()
+                           .AsQueryable();
+
+            if (!string.IsNullOrEmpty(includes))
+            {
+                foreach (string include in includes.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query
+                    .Include(include);
+                }
+            }
+            
+            return await query.FirstOrDefaultAsync(x => x.Id == Id);
         }
 
         public Task<ICollection<T>> GetList(Func<T, bool> condition = null, int pageSize = 0, int pageNumber = 0, string includes = null)

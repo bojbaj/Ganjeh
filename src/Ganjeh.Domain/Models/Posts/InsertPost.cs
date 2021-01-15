@@ -13,6 +13,7 @@ namespace Ganjeh.Domain.Models.Posts
         [Range(1, Int32.MaxValue, ErrorMessage = "Price isn't valid")]
         public decimal Price { get; set; }
         public string Video { get; set; }
+        [Required]
         public string Image { get; set; }
         public ICollection<string> OtherImages { get; set; }
         public string Description { get; set; }

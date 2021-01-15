@@ -31,7 +31,7 @@ namespace Ganjeh.Application.Services
                     condition: x => PostCategoryId.Equals(Guid.Empty) || x.PostCategoryId.Equals(PostCategoryId),
                     pageSize: pageSize,
                     pageNumber: pageNumber,
-                    includes: $"{nameof(PostCategory)},{nameof(Address)},{nameof(Address)}.{nameof(RegionCity)},Video"
+                    includes: $"{nameof(PostCategory)},{nameof(Address)},{nameof(Address)}.{nameof(RegionCity)}"
                 );
                 return new TypedResult<ICollection<PostDTO>>(_mapper.Map<ICollection<PostDTO>>(result));
             }
@@ -65,11 +65,15 @@ namespace Ganjeh.Application.Services
             {
                 if (post.Id.Equals(Guid.Empty))
                     throw new InvalidOperationException(ErrorMessages.ID_IS_REQUIRED);
-                Post existsRecord = await postRepo.FindById(post.Id);
+                Post existsRecord = await postRepo.FindById(
+                    post.Id,
+                    includes: $"{nameof(PostCategory)},{nameof(Address)},{nameof(Address)}.{nameof(RegionCity)}"
+                    );
                 if (existsRecord == null)
                     throw new InvalidOperationException(ErrorMessages.THIS_RECORD_DOES_NOT_EXISTS);
+                
+                existsRecord = _mapper.Map<UpdatePost, Post>(post, existsRecord);
 
-                existsRecord.Title = post.Title;
                 Post result = await postRepo.Update(existsRecord);
                 return new TypedResult<PostDTO>(_mapper.Map<PostDTO>(result));
             }

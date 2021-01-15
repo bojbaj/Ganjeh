@@ -93,6 +93,8 @@ namespace Ganjeh.Api
 
             app.ConfigureExceptionHandler(logger);
 
+            // app.UseHttpsRedirection();
+
             app.UseRouting();
 
             app.UseCors("ApiCorsPolicy");

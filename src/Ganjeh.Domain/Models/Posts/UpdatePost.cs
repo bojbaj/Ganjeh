@@ -4,12 +4,10 @@ using Ganjeh.Domain.Filters.Validations;
 
 namespace Ganjeh.Domain.Models.Posts
 {
-    public class UpdatePost
+    public class UpdatePost : InsertPost
     {
         [Required]
         [NonEmptyGuid]
         public Guid Id { get; set; }
-        [Required]
-        public string Title { get; set; }
     }
 }

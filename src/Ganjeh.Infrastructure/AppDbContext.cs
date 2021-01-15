@@ -17,9 +17,7 @@ namespace Ganjeh.Infrastructure
         public DbSet<RegionState> RegionStates { get; set; }
         public DbSet<RegionCity> RegionCities { get; set; }
         public DbSet<PostCategory> PostCategories { get; set; }
-        public DbSet<Post> Posts { get; set; }
-        public DbSet<Phone> Phones { get; set; }
+        public DbSet<Post> Posts { get; set; }        
         public DbSet<Address> Addresses { get; set; }
-        public DbSet<File> Files { get; set; }
     }
 }
