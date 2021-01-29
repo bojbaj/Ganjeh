@@ -2,6 +2,7 @@
 using Core.Auth;
 using Core.Auth.Models;
 using Ganjeh.Api.Areas.Customer.Base;
+using Ganjeh.Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -23,7 +24,8 @@ namespace Ganjeh.Api.Areas.Customer.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] RegisterRequest registerRequest)
         {
-            var result = await userService.RegisterAsync(registerRequest);
+            string[] roles = new string[] { nameof(RoleEnum.Customer) };
+            var result = await userService.RegisterAsync(registerRequest, roles);
             if (result.Status)
             {
                 return Ok(result);

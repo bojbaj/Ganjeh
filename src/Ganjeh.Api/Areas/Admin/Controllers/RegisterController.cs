@@ -2,6 +2,7 @@
 using Core.Auth;
 using Core.Auth.Models;
 using Ganjeh.Api.Areas.Admin.Base;
+using Ganjeh.Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -21,7 +22,8 @@ namespace Ganjeh.Api.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] RegisterRequest registerRequest)
         {
-            var result = await userService.RegisterAsync(registerRequest);
+            string[] roles = new string[] { nameof(RoleEnum.Admin) };
+            var result = await userService.RegisterAsync(registerRequest, roles);
             if (result.Status)
             {
                 return Ok(result);

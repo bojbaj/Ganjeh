@@ -16,6 +16,7 @@ namespace Ganjeh.Application
             services.AddScoped<IRegionCityService, RegionCityService>();
             services.AddScoped<IPostCategoryService, PostCategoryService>();
             services.AddScoped<IPostService, PostService>();
+            services.AddScoped<IPostClientSideService, PostClientSideService>();
         }
     }
 }

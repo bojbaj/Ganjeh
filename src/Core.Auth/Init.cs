@@ -65,6 +65,16 @@ namespace Core.Auth
                 IdentityResult result = roleManager.CreateAsync(identityRole).Result;
             }
 
+            string customerRoleName = "Customer";
+            if (roleManager.FindByNameAsync(customerRoleName).Result == null)
+            {
+                IdentityRole identityRole = new IdentityRole
+                {
+                    Name = customerRoleName
+                };
+                IdentityResult result = roleManager.CreateAsync(identityRole).Result;
+            }
+
             string adminEmail = "bojbaj@gmail.com";
             if (userManager.FindByEmailAsync(adminEmail).Result == null)
             {

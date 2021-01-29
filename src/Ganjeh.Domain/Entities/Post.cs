@@ -21,5 +21,6 @@ namespace Ganjeh.Domain.Entities
         public string PhoneNumbers { get; set; }
         public string Email { get; set; }
         public string Website { get; set; }
+        public Guid OwnerId { get; set; }
     }
 }

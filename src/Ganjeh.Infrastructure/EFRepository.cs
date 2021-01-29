@@ -36,6 +36,7 @@ namespace Ganjeh.Infrastructure
             entity.Id = Guid.NewGuid();
             entity.Created = DateTime.Now;
             entity.LastModified = DateTime.Now;
+            entity.CreatedBy = CurrentUserId();
             entity.ModifiedBy = CurrentUserId();
             await appDbContext.Set<T>().AddAsync(entity);
             await appDbContext.SaveChangesAsync();
@@ -67,10 +68,9 @@ namespace Ganjeh.Infrastructure
                     .Include(include);
                 }
             }
-            
+
             return await query.FirstOrDefaultAsync(x => x.Id == Id);
         }
-
         public Task<ICollection<T>> GetList(Func<T, bool> condition = null, int pageSize = 0, int pageNumber = 0, string includes = null)
         {
             IQueryable<T> query = appDbContext.Set<T>()

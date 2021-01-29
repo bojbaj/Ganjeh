@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace Ganjeh.Api.Areas.Admin.Base
 {
     [Area(nameof(RoleEnum.Admin))]
-    [Authorize(Roles = "Admin")]
+    [Authorize]
+    // [Authorize(Roles = "Admin")]
     // [UserVerification(RoleEnum.Admin)]
     public class AdminApiController : BaseApiController
     {

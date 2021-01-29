@@ -21,7 +21,7 @@ namespace Core.Auth
             _configuration = configuration;
         }
 
-        public async Task<TypedResult<RegisterResponse>> RegisterAsync(RegisterRequest req)
+        public async Task<TypedResult<RegisterResponse>> RegisterAsync(RegisterRequest req, IEnumerable<string> roles)
         {
             var userExists = await userManager.FindByNameAsync(req.Username);
             if (userExists != null)
@@ -36,6 +36,14 @@ namespace Core.Auth
             var result = await userManager.CreateAsync(user, req.Password);
             if (!result.Succeeded)
                 return new TypedResult<RegisterResponse>(false, "User creation failed! Please check user details and try again.", null);
+
+            if (roles != null)
+            {
+                foreach (string role in roles)
+                {
+                    await userManager.AddToRoleAsync(user, role);
+                }
+            }
 
             LoginRequest loginRequest = new LoginRequest()
             {
